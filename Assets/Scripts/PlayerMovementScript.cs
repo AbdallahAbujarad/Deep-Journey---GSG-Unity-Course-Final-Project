@@ -47,11 +47,11 @@ public class PlayerMovementScript : MonoBehaviour
     }
     void Move()
     {
-        float speed = 2f;
+        float speed = 5f;
         Vector3 movement = new Vector3();
         if (Input.GetKey(KeyCode.LeftShift) && !isJumped)
         {
-            speed = 4;
+            speed = 10;
         }
         if (Input.GetKey(KeyCode.W))
         {
