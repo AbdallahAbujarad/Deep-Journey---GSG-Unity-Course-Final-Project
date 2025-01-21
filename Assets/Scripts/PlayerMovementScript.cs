@@ -50,30 +50,32 @@ public class PlayerMovementScript : MonoBehaviour
     void Move()
     {
         float speed = 2f;
+        Vector3 movement = new Vector3();
         if (Input.GetKey(KeyCode.LeftShift) && !isJumped)
         {
             speed = 4;
         }
         if (Input.GetKey(KeyCode.W))
         {
-            rb.AddForce(-transform.forward * speed, ForceMode.Impulse);
+            movement  += transform.forward * speed;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            rb.AddForce(-transform.forward * speed, ForceMode.Impulse);
+            movement  += -transform.forward * speed;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            rb.AddForce(-transform.right * speed, ForceMode.Impulse);
+            movement  += -transform.right * speed;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            rb.AddForce(transform.right * speed, ForceMode.Impulse);
+            movement  += transform.right * speed;
         }
         if (Input.GetKeyDown(KeyCode.Space) && !isJumped)
         {
             rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
             isJumped = true;
+            rb.velocity = movement;
         }
     }
     void CamRot()
