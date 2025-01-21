@@ -1,5 +1,3 @@
-using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovementScript : MonoBehaviour
@@ -57,26 +55,29 @@ public class PlayerMovementScript : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.W))
         {
-            movement  += transform.forward * speed;
+            movement  += transform.forward;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            movement  += -transform.forward * speed;
+            movement  += -transform.forward;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            movement  += -transform.right * speed;
+            movement  += -transform.right;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            movement  += transform.right * speed;
+            movement  += transform.right;
         }
+        movement = movement.normalized * speed;
+        movement.y = rb.velocity.y;
+        
         if (Input.GetKeyDown(KeyCode.Space) && !isJumped)
         {
             rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
             isJumped = true;
-            rb.velocity = movement;
         }
+        rb.velocity = movement;
     }
     void CamRot()
     {
