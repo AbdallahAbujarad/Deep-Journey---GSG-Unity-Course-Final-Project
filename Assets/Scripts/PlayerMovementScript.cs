@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovementScript : MonoBehaviour
@@ -8,6 +9,7 @@ public class PlayerMovementScript : MonoBehaviour
     Coroutine movementCor;
     float jumpPower = 5;
     bool isJumped;
+    bool isMoveActive = true;
 
     //Camera Vars
     float mouseSensetivity = 20;
@@ -21,7 +23,6 @@ public class PlayerMovementScript : MonoBehaviour
     {
         //Movement
         rb = GetComponent<Rigidbody>();
-        movementCor = StartCoroutine(Move());
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
         //Camera
@@ -35,47 +36,44 @@ public class PlayerMovementScript : MonoBehaviour
             CamRot();
         }
     }
-    void LateUpdate()
+    void FixedUpdate()
     {
         if (isCamActive)
         {
             CamRotLate();
         }
-    }
-    IEnumerator Move()
-    {
-        while (true)
+        if (isMoveActive)
         {
-
-            float speed = 2f;
-            Vector3 movement = new Vector3();
-            if (Input.GetKey(KeyCode.LeftShift) && !isJumped)
-            {
-                speed = 4;
-            }
-            if (Input.GetKey(KeyCode.W))
-            {
-                movement += transform.forward * speed;
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                movement -= transform.forward * speed;
-            }
-            if (Input.GetKey(KeyCode.A))
-            {
-                movement -= transform.right * speed;
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                movement += transform.right * speed;
-            }
-            if (Input.GetKeyDown(KeyCode.Space) && !isJumped)
-            {
-                rb.velocity = Vector3.up * jumpPower;
-                isJumped = true;
-            }
-            rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
-            yield return null;
+            Move();
+        }
+    }
+    void Move()
+    {
+        float speed = 2f;
+        if (Input.GetKey(KeyCode.LeftShift) && !isJumped)
+        {
+            speed = 4;
+        }
+        if (Input.GetKey(KeyCode.W))
+        {
+            rb.AddForce(-transform.forward * speed, ForceMode.Impulse);
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            rb.AddForce(-transform.forward * speed, ForceMode.Impulse);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            rb.AddForce(-transform.right * speed, ForceMode.Impulse);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            rb.AddForce(transform.right * speed, ForceMode.Impulse);
+        }
+        if (Input.GetKeyDown(KeyCode.Space) && !isJumped)
+        {
+            rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            isJumped = true;
         }
     }
     void CamRot()

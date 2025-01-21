@@ -3,7 +3,7 @@ using UnityEngine;
 public class CamFollowPlayer : MonoBehaviour
 {
     public Transform player;
-    void LateUpdate()
+    void FixedUpdate()
     {
         transform.position = player.position + Vector3.up;
     }
