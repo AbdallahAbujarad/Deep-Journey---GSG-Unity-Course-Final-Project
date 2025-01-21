@@ -10,7 +10,7 @@ public class PlayerMovementScript : MonoBehaviour
     bool isMoveActive = true;
 
     //Camera Vars
-    float mouseSensetivity = 20;
+    float mouseSensetivity = 100;
     float xRotation;
     float yRotation;
     bool isCamActive = true;
@@ -44,6 +44,12 @@ public class PlayerMovementScript : MonoBehaviour
         {
             Move();
         }
+        //jump
+        if (Input.GetKey(KeyCode.Space) && !isJumped)
+        {
+            rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            isJumped = true;
+        }
     }
     void Move()
     {
@@ -55,28 +61,23 @@ public class PlayerMovementScript : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.W))
         {
-            movement  += transform.forward;
+            movement += transform.forward;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            movement  += -transform.forward;
+            movement += -transform.forward;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            movement  += -transform.right;
+            movement += -transform.right;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            movement  += transform.right;
+            movement += transform.right;
         }
         movement = movement.normalized * speed;
         movement.y = rb.velocity.y;
-        
-        if (Input.GetKeyDown(KeyCode.Space) && !isJumped)
-        {
-            rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-            isJumped = true;
-        }
+
         rb.velocity = movement;
     }
     void CamRot()
