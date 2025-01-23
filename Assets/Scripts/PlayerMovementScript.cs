@@ -10,7 +10,7 @@ public class PlayerMovementScript : MonoBehaviour
     bool isMoveActive = true;
 
     //Camera Vars
-    float mouseSensetivity = 100;
+    float mouseSensetivity = 80;
     float xRotation;
     float yRotation;
     bool isCamActive = true;
